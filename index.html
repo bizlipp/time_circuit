@@ -206,9 +206,24 @@
       line-height:1.45;
       font-size:13px;
     }
+    .quote-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+    }
     .quote em{
       color:#ffd6b3;
       font-style:normal;
+    }
+    .btn-sample{
+      padding:7px 10px;
+      font-size:12px;
+      border-radius:999px;
+      border:1px solid rgba(255,177,112,.55);
+      background:linear-gradient(180deg, rgba(255,141,58,.26), rgba(47,184,255,.10));
+      color:#fff3e6;
     }
     .playlist{
       display:grid;
@@ -291,6 +306,29 @@
 </head>
 <body>
   <div class="wrap">
+    <section class="card">
+      <div class="title-row">
+        <div>
+          <h1 id="trackTitle">KIDS WILL LOVE IT</h1>
+          <p class="subtitle" id="trackDescription">Time-circuit drop with a cinematic intro, quote slam, and halftime swamphop dubstep grit.</p>
+        </div>
+        <div class="badge"><span id="badgeBpm">90.25 halftime</span> • <span id="badgeKey">G-centered</span></div>
+      </div>
+      <div class="pillrow">
+        <div class="pill">Time-circuit themed visualizer</div>
+        <div class="pill">Playlist-ready player scaffold</div>
+        <div class="pill">Cover-art driven color grade</div>
+        <div class="pill">Auto-next on track end</div>
+      </div>
+      <div class="quote">
+        <div class="quote-head">
+          <em>Sample line:</em>
+          <button id="btnSample" class="btn-sample" type="button">Play Sample</button>
+        </div>
+        "Guess you're not ready for that yet. But your kids will love it."
+      </div>
+    </section>
+
     <section class="hero">
       <div class="cover">
         <img id="coverImg" src="./kids.will.love.it.png" alt="Kids Will Love It artwork" />
@@ -389,26 +427,6 @@
       </section>
     </div>
 
-    <section class="card">
-      <div class="title-row">
-        <div>
-          <h1 id="trackTitle">KIDS WILL LOVE IT</h1>
-          <p class="subtitle" id="trackDescription">Time-circuit drop with a cinematic intro, quote slam, and halftime swamphop dubstep grit.</p>
-        </div>
-        <div class="badge"><span id="badgeBpm">90.25 halftime</span> • <span id="badgeKey">G-centered</span></div>
-      </div>
-      <div class="pillrow">
-        <div class="pill">Time-circuit themed visualizer</div>
-        <div class="pill">Playlist-ready player scaffold</div>
-        <div class="pill">Cover-art driven color grade</div>
-        <div class="pill">Auto-next on track end</div>
-      </div>
-      <div class="quote">
-        <em>Sample line:</em><br />
-        "Guess you're not ready for that yet. But your kids will love it."
-      </div>
-    </section>
-
     <div class="footer">Tip: add more files and metadata to the playlist array to convert this into a multi-track release page.</div>
   </div>
 
@@ -432,6 +450,7 @@
     const btnPlay = document.getElementById("btnPlay");
     const btnNext = document.getElementById("btnNext");
     const btnRestart = document.getElementById("btnRestart");
+    const btnSample = document.getElementById("btnSample");
     const seek = document.getElementById("seek");
     const vol = document.getElementById("vol");
     const tCur = document.getElementById("tCur");
@@ -470,6 +489,8 @@
     let sourceNode;
     let data;
     let freq;
+    const sampleAudio = new Audio("./kids.gonnaLoveit.mp3");
+    sampleAudio.preload = "metadata";
 
     const BAR_COUNT = 48;
     const W = 920;
@@ -598,6 +619,25 @@
     btnRestart.addEventListener("click", async () => {
       audio.currentTime = 0;
       if (!audio.paused) await playCurrent();
+    });
+    btnSample.addEventListener("click", async () => {
+      try {
+        if (sampleAudio.paused) {
+          sampleAudio.currentTime = 0;
+          await sampleAudio.play();
+          btnSample.textContent = "Stop Sample";
+        } else {
+          sampleAudio.pause();
+          sampleAudio.currentTime = 0;
+          btnSample.textContent = "Play Sample";
+        }
+      } catch (err) {
+        console.error("Sample playback failed:", err);
+        btnSample.textContent = "Sample Error";
+      }
+    });
+    sampleAudio.addEventListener("ended", () => {
+      btnSample.textContent = "Play Sample";
     });
 
     vol.addEventListener("input", () => {
