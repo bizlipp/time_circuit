@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kids Will Love It — Time-Circuit Drop</title>
+  <style>
+    :root{
+      --bg:#07060a;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(0,0,0,.35);
+      --txt:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --hot:rgba(255,255,255,.95);
+      --glow1:rgba(255,255,255,.22);
+      --glow2:rgba(255,255,255,.12);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--txt);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1200px 700px at 20% 15%, var(--glow1), transparent 55%),
+        radial-gradient(1000px 700px at 85% 20%, var(--glow2), transparent 60%),
+        radial-gradient(900px 650px at 50% 90%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(180deg, #050409 0%, #090816 55%, #050409 100%);
+      overflow-x:hidden;
+    }
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:18px 14px 40px;
+      display:grid;
+      gap:14px;
+    }
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      padding:14px 14px 6px;
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      backdrop-filter: blur(10px);
+      border:1px solid rgba(255,255,255,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    header:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 10px);
+      opacity:.25;
+      transform:skewX(-10deg);
+      pointer-events:none;
+      animation:scan 5.5s linear infinite;
+    }
+    @keyframes scan{
+      0%{transform:translateX(-30%) skewX(-10deg)}
+      100%{transform:translateX(30%) skewX(-10deg)}
+    }
+    .title h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:.4px;
+    }
+    .title p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .badge{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      white-space:nowrap;
+      position:relative;
+      z-index:1;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(10px);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.5px;
+      color:rgba(255,255,255,.85);
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    button{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.26);
+      color:var(--txt);
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:600;
+      cursor:pointer;
+      transition:transform .12s ease, background .12s ease;
+    }
+    button:active{transform:scale(.98)}
+    .range{
+      flex:1;
+      min-width:200px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    input[type="range"]{width:100%}
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* Visualizer */
+    .viz{
+      width:100%;
+      height:280px;
+      border-radius:16px;
+      background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+      position:relative;
+    }
+    .viz svg{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+    .time-circuits{
+      position:absolute;
+      inset:10px 10px auto auto;
+      padding:8px 10px;
+      border-radius:12px;
+      background:rgba(0,0,0,.36);
+      border:1px solid rgba(255,255,255,.12);
+      font-size:12px;
+      color:rgba(255,255,255,.82);
+      user-select:none;
+    }
+    .time-circuits b{color:rgba(255,255,255,.95)}
+    .quote{
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,.22);
+      border:1px dashed rgba(255,255,255,.18);
+      color:rgba(255,255,255,.88);
+      font-size:13px;
+      line-height:1.45;
+    }
+    .quote em{color:rgba(255,255,255,.70); font-style:normal}
+    .small{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+    .footer{
+      margin-top:8px;
+      text-align:center;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+    }
+    .pillrow{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .pill{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      color:rgba(255,255,255,.75);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>KIDS WILL LOVE IT <span style="opacity:.7">— Time-Circuit Drop</span></h1>
+        <p>Clean guitar hero intro → time-circuit build → quote hit → halftime SwampHop dubstep + metal drizzle.</p>
+      </div>
+      <div class="badge">90.25 halftime • G-centered</div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>PLAYER</h2>
+        <audio id="audio" preload="metadata" crossorigin="anonymous">
+          <!-- Put your MP3 next to this HTML, or update the path -->
+          <source src="kids-will-love-it.mp3" type="audio/mpeg" />
+        </audio>
+
+        <div class="controls">
+          <button id="btnPlay" aria-label="Play / Pause">Play</button>
+          <button id="btnRestart" aria-label="Restart">Restart</button>
+
+          <div class="range">
+            <span id="tCur">0:00</span>
+            <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek" />
+            <span id="tDur">0:00</span>
+          </div>
+
+          <div class="range" style="min-width:180px; flex:0.6">
+            <span>Vol</span>
+            <input id="vol" type="range" min="0" max="1" step="0.01" value="0.9" aria-label="Volume" />
+          </div>
+        </div>
+
+        <div class="pillrow">
+          <div class="pill">Hook every 8 bars</div>
+          <div class="pill">Quote → micro-silence → drop</div>
+          <div class="pill">Sub + wobble + gated grit</div>
+          <div class="pill">Metal drizzle accents</div>
+        </div>
+
+        <div class="quote">
+          <em>Sample line (minimal vocal):</em><br/>
+          “Guess you’re not ready for that yet… But your kids will love it.”
+        </div>
+
+        <div class="small">
+          Tip: for the hardest “time-jump,” automate a tiny <b>tape-stop</b> right before the quote,
+          then a <b>micro-silence</b> (50–120ms) before the drop hits.
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>VISUALIZER</h2>
+        <div class="viz" id="viz">
+          <div class="time-circuits">
+            TIME CIRCUITS<br/>
+            DEST: <b id="dest">88</b> MPH<br/>
+            FLUX: <b id="flux">ARMED</b>
+          </div>
+          <svg viewBox="0 0 1000 420" preserveAspectRatio="none" aria-label="Audio visualizer">
+            <!-- background grid -->
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="rgba(255,255,255,.18)"/>
+                <stop offset="1" stop-color="rgba(255,255,255,.04)"/>
+              </linearGradient>
+              <filter id="softGlow">
+                <feGaussianBlur stdDeviation="2.5" result="b"/>
+                <feMerge>
+                  <feMergeNode in="b"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect x="0" y="0" width="1000" height="420" fill="rgba(0,0,0,.20)"></rect>
+
+            <g opacity=".25">
+              <path d="M0 340 H1000" stroke="rgba(255,255,255,.20)" stroke-width="1"/>
+              <path d="M0 260 H1000" stroke="rgba(255,255,255,.14)" stroke-width="1"/>
+              <path d="M0 180 H1000" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
+              <path d="M0 100 H1000" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+              <path d="M120 0 V420" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+              <path d="M260 0 V420" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+              <path d="M420 0 V420" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+              <path d="M600 0 V420" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+              <path d="M760 0 V420" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+              <path d="M900 0 V420" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+            </g>
+
+            <!-- flux-capacitor triangle -->
+            <g transform="translate(500 180)" filter="url(#softGlow)">
+              <path id="tri" d="M0 -120 L105 85 L-105 85 Z"
+                    fill="none" stroke="url(#g1)" stroke-width="4" opacity=".9"/>
+              <circle id="core" cx="0" cy="-20" r="12" fill="rgba(255,255,255,.75)" opacity=".8"/>
+              <path id="bolt" d="M0 -110 L20 -60 L-5 -60 L25 10 L-10 10 L10 85"
+                    fill="none" stroke="rgba(255,255,255,.65)" stroke-width="3" opacity=".7"/>
+            </g>
+
+            <!-- waveform path -->
+            <path id="wave" d="M0 300 C 120 300, 200 300, 320 300 S 520 300, 640 300 S 840 300, 1000 300"
+                  fill="none" stroke="rgba(255,255,255,.75)" stroke-width="3" filter="url(#softGlow)" opacity=".9"></path>
+
+            <!-- spectrum bars -->
+            <g id="bars" transform="translate(40 380)"></g>
+
+            <!-- speedline -->
+            <path id="speed" d="M-40 330 Q 500 250 1040 330" fill="none"
+                  stroke="rgba(255,255,255,.14)" stroke-width="10" opacity=".35"></path>
+          </svg>
+        </div>
+
+        <div class="meta">
+          <div>Mode: <span id="mode">IDLE</span></div>
+          <div>Hook: <span id="hook">ARMING…</span></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">Tip: swap <b>kids-will-love-it.mp3</b> with your rendered file. Works as a static GitHub Pages drop.</div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const btnPlay = document.getElementById('btnPlay');
+    const btnRestart = document.getElementById('btnRestart');
+    const seek = document.getElementById('seek');
+    const vol = document.getElementById('vol');
+    const tCur = document.getElementById('tCur');
+    const tDur = document.getElementById('tDur');
+
+    const wave = document.getElementById('wave');
+    const tri = document.getElementById('tri');
+    const core = document.getElementById('core');
+    const bolt = document.getElementById('bolt');
+    const barsG = document.getElementById('bars');
+
+    const modeEl = document.getElementById('mode');
+    const hookEl = document.getElementById('hook');
+    const destEl = document.getElementById('dest');
+    const fluxEl = document.getElementById('flux');
+
+    const clamp = (n,a,b)=>Math.max(a,Math.min(b,n));
+    const fmt = (s)=>{
+      if(!isFinite(s)) return "0:00";
+      s = Math.max(0, s|0);
+      const m = (s/60)|0;
+      const r = s%60;
+      return m+":"+(r<10?"0":"")+r;
+    };
+
+    // Build bars
+    const BAR_COUNT = 48;
+    const W = 920;
+    const H = 120;
+    const gap = 6;
+    const bw = (W - (BAR_COUNT-1)*gap) / BAR_COUNT;
+    const bars = [];
+    for(let i=0;i<BAR_COUNT;i++){
+      const x = i*(bw+gap);
+      const rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
+      rect.setAttribute("x", x);
+      rect.setAttribute("y", -2);
+      rect.setAttribute("width", bw);
+      rect.setAttribute("height", 2);
+      rect.setAttribute("rx", 2);
+      rect.setAttribute("fill", "rgba(255,255,255,.55)");
+      rect.setAttribute("opacity", "0.9");
+      barsG.appendChild(rect);
+      bars.push(rect);
+    }
+
+    // Audio context + analyser
+    let ctx, analyser, src, data, freq;
+    const ensureAudio = ()=>{
+      if(ctx) return;
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 2048;
+      analyser.smoothingTimeConstant = 0.85;
+      data = new Uint8Array(analyser.fftSize);
+      freq = new Uint8Array(analyser.frequencyBinCount);
+      src = ctx.createMediaElementSource(audio);
+      src.connect(analyser);
+      analyser.connect(ctx.destination);
+    };
+
+    const setPlayLabel = ()=> btnPlay.textContent = audio.paused ? "Play" : "Pause";
+
+    btnPlay.addEventListener('click', async ()=>{
+      ensureAudio();
+      if(ctx.state === "suspended") await ctx.resume();
+      if(audio.paused) audio.play(); else audio.pause();
+      setPlayLabel();
+    });
+
+    btnRestart.addEventListener('click', ()=>{
+      audio.currentTime = 0;
+      if(!audio.paused) audio.play();
+    });
+
+    vol.addEventListener('input', ()=> audio.volume = parseFloat(vol.value));
+
+    audio.addEventListener('loadedmetadata', ()=>{
+      tDur.textContent = fmt(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', ()=>{
+      if(!audio.duration) return;
+      const v = (audio.currentTime / audio.duration) * 1000;
+      seek.value = String(v);
+      tCur.textContent = fmt(audio.currentTime);
+    });
+
+    seek.addEventListener('input', ()=>{
+      if(!audio.duration) return;
+      const t = (parseFloat(seek.value)/1000) * audio.duration;
+      audio.currentTime = t;
+    });
+
+    audio.addEventListener('play', ()=> { setPlayLabel(); modeEl.textContent="RUN"; });
+    audio.addEventListener('pause', ()=> { setPlayLabel(); modeEl.textContent="IDLE"; });
+
+    // Visualizer loop
+    let lastHookState = "ARMING…";
+    function animate(){
+      requestAnimationFrame(animate);
+      if(!analyser) return;
+
+      analyser.getByteTimeDomainData(data);
+      analyser.getByteFrequencyData(freq);
+
+      // Energy estimates (cheap)
+      let low=0, mid=0, high=0;
+      const n = freq.length;
+      for(let i=0;i<n;i++){
+        const v = freq[i]/255;
+        if(i < n*0.12) low += v;
+        else if(i < n*0.45) mid += v;
+        else high += v;
+      }
+      low /= (n*0.12);
+      mid /= (n*0.33);
+      high/= (n*0.55);
+
+      const intensity = clamp((low*1.2 + mid*0.9 + high*0.6), 0, 1);
+
+      // Wave path
+      const points = 64;
+      let d = "M0 300";
+      for(let i=0;i<points;i++){
+        const idx = Math.floor((i/(points-1)) * (data.length-1));
+        const t = (data[idx]-128)/128; // -1..1
+        const x = (i/(points-1)) * 1000;
+        const y = 300 + t * (40 + intensity*55);
+        d += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
+      }
+      wave.setAttribute("d", d);
+
+      // Bars
+      for(let i=0;i<BAR_COUNT;i++){
+        const bin = Math.floor((i/BAR_COUNT) * (n-1));
+        const v = freq[bin]/255;
+        const h = 2 + v * H * (0.55 + intensity*0.75);
+        bars[i].setAttribute("y", (-h).toFixed(1));
+        bars[i].setAttribute("height", h.toFixed(1));
+        const op = 0.35 + v*0.65;
+        bars[i].setAttribute("opacity", op.toFixed(2));
+      }
+
+      // Flux animation
+      const pulse = 0.55 + intensity*0.75;
+      tri.setAttribute("opacity", (0.35 + pulse*0.55).toFixed(2));
+      core.setAttribute("opacity", (0.25 + pulse*0.75).toFixed(2));
+      bolt.setAttribute("opacity", (0.18 + pulse*0.82).toFixed(2));
+
+      // “88 mph” gag (ramps when loud)
+      const mph = Math.round(40 + intensity*60);
+      destEl.textContent = String(mph);
+      fluxEl.textContent = mph >= 88 ? "ENGAGED" : "ARMED";
+
+      // Hook indicator: fake “every 8 bars” via time slices if duration known
+      if(audio.duration){
+        const t = audio.currentTime;
+        const slice = Math.floor((t % 16)); // visually cycles
+        const hook = (slice >= 13 && slice <= 15) ? "NOT READY (stutter)" :
+                     (slice === 0) ? "KIDS WILL LOVE IT (slam)" :
+                     "…";
+        if(hook !== lastHookState){
+          hookEl.textContent = hook;
+          lastHookState = hook;
+        }
+      }
+    }
+    animate();
+  </script>
+</body>
+</html>
