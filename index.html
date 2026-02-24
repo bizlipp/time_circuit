@@ -46,6 +46,7 @@
       display:grid;
       grid-template-columns:320px 1fr;
       gap:14px;
+      align-items:stretch;
     }
     @media (max-width: 980px){
       .hero{grid-template-columns:1fr}
@@ -86,6 +87,10 @@
       background:linear-gradient(90deg, rgba(47,184,255,0), rgba(47,184,255,.65), rgba(255,141,58,.75), rgba(255,141,58,0));
       opacity:.75;
       pointer-events:none;
+    }
+    .hero > .card{
+      display:flex;
+      flex-direction:column;
     }
     .title-row{
       display:flex;
@@ -254,6 +259,11 @@
       overflow:hidden;
       position:relative;
     }
+    .hero > .card .viz{
+      flex:1;
+      height:100%;
+      min-height:420px;
+    }
     .viz svg{
       width:100%;
       height:100%;
@@ -286,22 +296,53 @@
         <img id="coverImg" src="./kids.will.love.it.png" alt="Kids Will Love It artwork" />
       </div>
       <div class="card">
-        <div class="title-row">
-          <div>
-            <h1 id="trackTitle">KIDS WILL LOVE IT</h1>
-            <p class="subtitle" id="trackDescription">Time-circuit drop with a cinematic intro, quote slam, and halftime swamphop dubstep grit.</p>
+        <h2>VISUALIZER</h2>
+        <div class="viz" id="viz">
+          <div class="time-circuits">
+            TIME CIRCUITS<br />
+            DEST: <b id="dest">88</b> MPH<br />
+            FLUX: <b id="flux">ARMED</b>
           </div>
-          <div class="badge"><span id="badgeBpm">90.25 halftime</span> • <span id="badgeKey">G-centered</span></div>
-        </div>
-        <div class="pillrow">
-          <div class="pill">Time-circuit themed visualizer</div>
-          <div class="pill">Playlist-ready player scaffold</div>
-          <div class="pill">Cover-art driven color grade</div>
-          <div class="pill">Auto-next on track end</div>
-        </div>
-        <div class="quote">
-          <em>Sample line:</em><br />
-          "Guess you're not ready for that yet. But your kids will love it."
+          <svg viewBox="0 0 1000 420" preserveAspectRatio="none" aria-label="Audio visualizer">
+            <defs>
+              <linearGradient id="g1" x1="0" x2="1">
+                <stop offset="0" stop-color="rgba(55,180,255,.55)" />
+                <stop offset="1" stop-color="rgba(255,141,58,.46)" />
+              </linearGradient>
+              <filter id="softGlow">
+                <feGaussianBlur stdDeviation="2.5" result="b" />
+                <feMerge>
+                  <feMergeNode in="b" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <rect x="0" y="0" width="1000" height="420" fill="rgba(0,0,0,.28)"></rect>
+
+            <g opacity=".30">
+              <path d="M0 340 H1000" stroke="rgba(126,209,255,.25)" stroke-width="1" />
+              <path d="M0 260 H1000" stroke="rgba(126,209,255,.18)" stroke-width="1" />
+              <path d="M0 180 H1000" stroke="rgba(126,209,255,.15)" stroke-width="1" />
+              <path d="M0 100 H1000" stroke="rgba(255,177,112,.16)" stroke-width="1" />
+              <path d="M120 0 V420" stroke="rgba(126,209,255,.12)" stroke-width="1" />
+              <path d="M260 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
+              <path d="M420 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
+              <path d="M600 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
+              <path d="M760 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
+              <path d="M900 0 V420" stroke="rgba(255,177,112,.12)" stroke-width="1" />
+            </g>
+
+            <g transform="translate(500 180)" filter="url(#softGlow)">
+              <path id="tri" d="M0 -120 L105 85 L-105 85 Z" fill="none" stroke="url(#g1)" stroke-width="4" opacity=".9"></path>
+              <circle id="core" cx="0" cy="-20" r="12" fill="rgba(255,185,120,.78)" opacity=".8"></circle>
+              <path id="bolt" d="M0 -110 L20 -60 L-5 -60 L25 10 L-10 10 L10 85" fill="none" stroke="rgba(98,192,255,.84)" stroke-width="3" opacity=".7"></path>
+            </g>
+
+            <path id="wave" d="M0 300 C 120 300, 200 300, 320 300 S 520 300, 640 300 S 840 300, 1000 300" fill="none" stroke="rgba(137,218,255,.88)" stroke-width="3" filter="url(#softGlow)" opacity=".9"></path>
+            <g id="bars" transform="translate(40 380)"></g>
+            <path id="speed" d="M-40 330 Q 500 250 1040 330" fill="none" stroke="rgba(255,157,84,.18)" stroke-width="10" opacity=".35"></path>
+          </svg>
         </div>
       </div>
     </section>
@@ -349,53 +390,22 @@
     </div>
 
     <section class="card">
-      <h2>VISUALIZER</h2>
-      <div class="viz" id="viz">
-        <div class="time-circuits">
-          TIME CIRCUITS<br />
-          DEST: <b id="dest">88</b> MPH<br />
-          FLUX: <b id="flux">ARMED</b>
+      <div class="title-row">
+        <div>
+          <h1 id="trackTitle">KIDS WILL LOVE IT</h1>
+          <p class="subtitle" id="trackDescription">Time-circuit drop with a cinematic intro, quote slam, and halftime swamphop dubstep grit.</p>
         </div>
-        <svg viewBox="0 0 1000 420" preserveAspectRatio="none" aria-label="Audio visualizer">
-          <defs>
-            <linearGradient id="g1" x1="0" x2="1">
-              <stop offset="0" stop-color="rgba(55,180,255,.55)" />
-              <stop offset="1" stop-color="rgba(255,141,58,.46)" />
-            </linearGradient>
-            <filter id="softGlow">
-              <feGaussianBlur stdDeviation="2.5" result="b" />
-              <feMerge>
-                <feMergeNode in="b" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          <rect x="0" y="0" width="1000" height="420" fill="rgba(0,0,0,.28)"></rect>
-
-          <g opacity=".30">
-            <path d="M0 340 H1000" stroke="rgba(126,209,255,.25)" stroke-width="1" />
-            <path d="M0 260 H1000" stroke="rgba(126,209,255,.18)" stroke-width="1" />
-            <path d="M0 180 H1000" stroke="rgba(126,209,255,.15)" stroke-width="1" />
-            <path d="M0 100 H1000" stroke="rgba(255,177,112,.16)" stroke-width="1" />
-            <path d="M120 0 V420" stroke="rgba(126,209,255,.12)" stroke-width="1" />
-            <path d="M260 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
-            <path d="M420 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
-            <path d="M600 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
-            <path d="M760 0 V420" stroke="rgba(126,209,255,.10)" stroke-width="1" />
-            <path d="M900 0 V420" stroke="rgba(255,177,112,.12)" stroke-width="1" />
-          </g>
-
-          <g transform="translate(500 180)" filter="url(#softGlow)">
-            <path id="tri" d="M0 -120 L105 85 L-105 85 Z" fill="none" stroke="url(#g1)" stroke-width="4" opacity=".9"></path>
-            <circle id="core" cx="0" cy="-20" r="12" fill="rgba(255,185,120,.78)" opacity=".8"></circle>
-            <path id="bolt" d="M0 -110 L20 -60 L-5 -60 L25 10 L-10 10 L10 85" fill="none" stroke="rgba(98,192,255,.84)" stroke-width="3" opacity=".7"></path>
-          </g>
-
-          <path id="wave" d="M0 300 C 120 300, 200 300, 320 300 S 520 300, 640 300 S 840 300, 1000 300" fill="none" stroke="rgba(137,218,255,.88)" stroke-width="3" filter="url(#softGlow)" opacity=".9"></path>
-          <g id="bars" transform="translate(40 380)"></g>
-          <path id="speed" d="M-40 330 Q 500 250 1040 330" fill="none" stroke="rgba(255,157,84,.18)" stroke-width="10" opacity=".35"></path>
-        </svg>
+        <div class="badge"><span id="badgeBpm">90.25 halftime</span> • <span id="badgeKey">G-centered</span></div>
+      </div>
+      <div class="pillrow">
+        <div class="pill">Time-circuit themed visualizer</div>
+        <div class="pill">Playlist-ready player scaffold</div>
+        <div class="pill">Cover-art driven color grade</div>
+        <div class="pill">Auto-next on track end</div>
+      </div>
+      <div class="quote">
+        <em>Sample line:</em><br />
+        "Guess you're not ready for that yet. But your kids will love it."
       </div>
     </section>
 
